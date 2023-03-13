@@ -72,6 +72,15 @@ function App() {
         }
     }
 
+    function getDeepLinkUrl(wcUrl) {
+        if(!!wcUrl) {
+            const encodedUrl = encodeURIComponent(wcUrl);
+            return `app.dosivault://wc"?uri_wc=${encodedUrl}`;
+        } else {
+            return `app.dosivault://wc"`;
+        }
+    }
+    
     async function fetchAddress() {
         // Keplr returns only an active address despite it's in a form of an array
         const accounts = await client.sendCustomRequest({
@@ -110,6 +119,7 @@ function App() {
                     </div>
                     <div>
                         <a href={getDynamicLinkUrl(sessionUri)}>Dynamic link</a>
+                        <a href={getDeepLinkUrl(sessionUri)}>Deep link</a>
                     </div>
                 </div>
                 <div hidden={!address}>
