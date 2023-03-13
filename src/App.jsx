@@ -75,7 +75,7 @@ function App() {
     function getDeepLinkUrl(wcUrl) {
         if(!!wcUrl) {
             const encodedUrl = encodeURIComponent(wcUrl);
-            return `app.dosivault://wc"?uri_wc=${encodedUrl}`;
+            return `app.dosivault://wc?uri_wc=${encodedUrl}`;
         } else {
             return `app.dosivault://wc"`;
         }
