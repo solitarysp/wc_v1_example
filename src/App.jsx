@@ -119,6 +119,8 @@ function App() {
                     </div>
                     <div>
                         <a href={getDynamicLinkUrl(sessionUri)}>Dynamic link</a>
+                    </div>
+                    <div>
                         <a href={getDeepLinkUrl(sessionUri)}>Deep link</a>
                     </div>
                 </div>
