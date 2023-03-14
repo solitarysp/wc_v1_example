@@ -19,7 +19,7 @@ function App() {
     const [address, setAddress] = useState(null);
     const [msgToSign, setMsgToSign] = useState('Any text');
     const [signature, setSignature] = useState(null);
-    
+
     useEffect(() => {
         console.log('like componentDidMount()');
         // componentDidMount()
@@ -35,13 +35,13 @@ function App() {
             const addrFromVault = await fetchAddress();
             setAddress(addrFromVault);
         });
-    
+
         client.on("disconnect", (error, payload) => {
             console.log('on "disconnect"');
             setSessionUri(null);
             setAddress(null);
         });
-    
+
         (async () => {
             // create a session on page load
             if(client.connected) {
@@ -49,7 +49,7 @@ function App() {
             }
 
             await client.createSession();
-            setSessionUri(client.uri);    
+            setSessionUri(client.uri);
         })();
         return () => {    // clean up (componetWillUnmount)
             console.log('like componentWillUnmount()');
@@ -57,18 +57,26 @@ function App() {
             client.off("disconnect");
         };
     }, []);
-    
+
     async function showQRCodeModal() {
         console.log('connectWallet() clientid', client.clientId);
         WalletConnectQRCodeModal.open(client.uri);
     }
 
-    function getDynamicLinkUrl(wcUrl) {
+    function getDynamicLinkUrlRelease(wcUrl) {
         if(!!wcUrl) {
             const encodedUrl = encodeURIComponent(wcUrl);
             return `https://dosivault.page.link/qL6j?uri_wc=${encodedUrl}`;
         } else {
             return `https://dosivault.page.link/qL6j`;
+        }
+    }
+    function getDynamicLinkUrlBeta(wcUrl) {
+        if(!!wcUrl) {
+            const encodedUrl = encodeURIComponent(wcUrl);
+            return `https://dosivault.page.link/muUh?uri_wc=${encodedUrl}`;
+        } else {
+            return `https://dosivault.page.link/muUh`;
         }
     }
 
@@ -80,7 +88,7 @@ function App() {
             return `app.dosivault://wc"`;
         }
     }
-    
+
     async function fetchAddress() {
         // Keplr returns only an active address despite it's in a form of an array
         const accounts = await client.sendCustomRequest({
@@ -109,7 +117,7 @@ function App() {
             <h1>dApp Example</h1>
             <h2>WalletConnect v1 + Vault</h2>
             <div>Session URI: {sessionUri}</div>
-            
+
             <div className="card">
                 <div hidden={!!address}>
                     <div>
@@ -118,7 +126,10 @@ function App() {
                         </button>
                     </div>
                     <div>
-                        <a href={getDynamicLinkUrl(sessionUri)}>Dynamic link</a>
+                        <a href={getDynamicLinkUrlRelease(sessionUri)}>Dynamic link Release</a>
+                    </div>
+                    <div>
+                        <a href={getDynamicLinkUrlBeta(sessionUri)}>Dynamic link beta</a>
                     </div>
                     <div>
                         <a href={getDeepLinkUrl(sessionUri)}>Deep link</a>
@@ -133,7 +144,7 @@ function App() {
                         <button onClick={handleSignArbitraryMsg}>
                             Off-chain sign
                         </button>
-                        <a href={getDynamicLinkUrl()}>
+                        <a href={getDynamicLinkUrlRelease()}>
                             Bring Vault to front
                         </a>
                         <div>
