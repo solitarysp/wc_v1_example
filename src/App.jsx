@@ -17,7 +17,7 @@ let client = new WalletConnect({
 });
 
 function App() {
-    const [chainId, setChainId] = useState(CHAIN_ID_BETA);
+    const [chainId, setChainId] = useState(CHAIN_ID_RELEASE);
     const [connect, setConnect] = useState(false);
     const [sessionUri, setSessionUri] = useState(null);
     const [address, setAddress] = useState(null);
@@ -63,7 +63,7 @@ function App() {
             client.off("connect");
             client.off("disconnect");
         };
-    }, []);
+    }, [chainId]);
 
     async function showQRCodeModal() {
         if (connect) {
@@ -111,6 +111,7 @@ function App() {
     }
 
     async function fetchAddress() {
+        console.log(chainId)
         // Keplr returns only an active address despite it's in a form of an array
         const accounts = await client.sendCustomRequest({
             id: Math.floor(Math.random() * 100000),
