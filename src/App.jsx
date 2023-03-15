@@ -17,7 +17,8 @@ let client = new WalletConnect({
 });
 
 function App() {
-    const [chainId, setChainId] = useState(CHAIN_ID_RELEASE);
+    const [chainId, setChainId] = useState(CHAIN_ID_BETA);
+    const [connect, setConnect] = useState(false);
     const [sessionUri, setSessionUri] = useState(null);
     const [address, setAddress] = useState(null);
     const [msgToSign, setMsgToSign] = useState('Any text');
@@ -33,6 +34,7 @@ function App() {
             }
 
             WalletConnectQRCodeModal.close();
+            setConnect(true);
             // no useful information in 'payload' since WalletConnect v1 is only for EVM-compatible chains
             // https://github.com/chainapsis/keplr-wallet/blob/master/packages/mobile/src/stores/wallet-connect/index.ts#L42
             console.log('on "connect"', payload, client.connected);
@@ -49,7 +51,7 @@ function App() {
 
         (async () => {
             // create a session on page load
-            if(client.connected) {
+            if (client.connected) {
                 await client.killSession();
             }
 
@@ -64,12 +66,17 @@ function App() {
     }, []);
 
     async function showQRCodeModal() {
-        console.log('connectWallet() clientid', client.clientId);
-        WalletConnectQRCodeModal.open(client.uri);
+        if (connect) {
+            const addrFromVault = await fetchAddress();
+            setAddress(addrFromVault);
+        } else {
+            console.log('connectWallet() clientid', client.clientId);
+            WalletConnectQRCodeModal.open(client.uri);
+        }
     }
 
     function getDynamicLinkUrlRelease(wcUrl) {
-        if(!!wcUrl) {
+        if (!!wcUrl) {
             const encodedUrl = encodeURIComponent(wcUrl);
             return `https://dosivault.page.link/qL6j?uri_wc=${encodedUrl}`;
         } else {
@@ -78,15 +85,15 @@ function App() {
     }
 
     function changeChainIdToRelease() {
-     setChainId(CHAIN_ID_RELEASE);
+        setChainId(CHAIN_ID_RELEASE);
     }
 
     function changeChainIdToBeta() {
-     setChainId(CHAIN_ID_BETA);
+        setChainId(CHAIN_ID_BETA);
     }
 
     function getDynamicLinkUrlBeta(wcUrl) {
-        if(!!wcUrl) {
+        if (!!wcUrl) {
             const encodedUrl = encodeURIComponent(wcUrl);
             return `https://dosivault.page.link/muUh?uri_wc=${encodedUrl}`;
         } else {
@@ -95,7 +102,7 @@ function App() {
     }
 
     function getDeepLinkUrl(wcUrl) {
-        if(!!wcUrl) {
+        if (!!wcUrl) {
             const encodedUrl = encodeURIComponent(wcUrl);
             return `app.dosivault://wc?uri_wc=${encodedUrl}`;
         } else {
@@ -124,7 +131,7 @@ function App() {
     }
 
     return (
-        <div className="App" style={{ backgroundColor: client.session.key ? 'white' : 'grey' }}>
+        <div className="App" style={{backgroundColor: client.session.key ? 'white' : 'grey'}}>
             <div>
                 <img src="https://i.pinimg.com/600x315/93/3e/14/933e14abb0241584fd6d5a31bea1ce7b.jpg"></img>
             </div>
@@ -140,13 +147,13 @@ function App() {
                     ChainId: {chainId}
                     <div>
                         <button
-                          hidden={chainId === CHAIN_ID_RELEASE }
-                          onClick={changeChainIdToRelease}>
+                            hidden={chainId === CHAIN_ID_RELEASE}
+                            onClick={changeChainIdToRelease}>
                             Change ChainId to release
                         </button>
                         <button
-                          hidden={chainId === CHAIN_ID_BETA }
-                          onClick={changeChainIdToBeta}>
+                            hidden={chainId === CHAIN_ID_BETA}
+                            onClick={changeChainIdToBeta}>
                             Change ChainId to beta
                         </button>
                     </div>
@@ -187,7 +194,10 @@ function App() {
                 <h3>
                     <a href='https://github.com/dosivault/wc_v1_example'>Source code</a>
                 </h3>
-                <button onClick={() => { client.killSession() }}>Kill Session Manually (only for Debugging)</button>
+                <button onClick={() => {
+                    client.killSession()
+                }}>Kill Session Manually (only for Debugging)
+                </button>
             </footer>
         </div>
     )
