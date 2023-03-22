@@ -172,6 +172,9 @@ function App() {
                     <div>
                         <a href={getDeepLinkUrl(sessionUri)}>Deep link</a>
                     </div>
+                    <div>
+                        <a href="intent://open?id=world.dosi.vault&url=Y&referrer=Z#Intent;scheme=market;action=android.intent.action.VIEW;package=com.android.vending;end">CH play</a>
+                    </div>
                 </div>
                 <div hidden={!address}>
                     Address: {address}
