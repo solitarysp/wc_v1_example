@@ -198,6 +198,11 @@ function App() {
                 <h3>
                     <a href='https://github.com/dosivault/wc_v1_example'>Source code</a>
                 </h3>
+                <h3>
+                    Depplink test
+                    <a href='app.dosivault://dapp/?uri_dapps=https://mail.google.com'>Dapps uri gmail</a>
+                    <a href='app.dosivault://dapp/?uri_dapps=javascript:alert(document.cookie)'>Dapps uri inject js</a>
+                </h3>
                 <button onClick={() => {
                     client.killSession()
                 }}>Kill Session Manually (only for Debugging)
