@@ -199,9 +199,13 @@ function App() {
                     <a href='https://github.com/dosivault/wc_v1_example'>Source code</a>
                 </h3>
                 <div>
-                    Depplink test<br>
-                    <a href='app.dosivault://dapp/?uri_dapps=https://mail.google.com'>Dapps uri gmail</a> <br/>
-                    <a href='app.dosivault://dapp/?uri_dapps=javascript:alert(document.cookie)'>Dapps uri inject js</a>
+                    Depplink test
+                    <div>
+                        <a href='app.dosivault://dapp/?uri_dapps=https://mail.google.com'>Dapps uri gmail</a>
+                    </div>
+                    <div>
+                        <a href='app.dosivault://dapp/?uri_dapps=javascript:alert(document.cookie)'>Dapps uri inject js</a>
+                    </div>
                 </div>
                 <button onClick={() => {
                     client.killSession()
