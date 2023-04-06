@@ -200,7 +200,7 @@ function App() {
                 </h3>
                 <h3>
                     Depplink test
-                    <a href='app.dosivault://dapp/?uri_dapps=https://mail.google.com'>Dapps uri gmail</a>
+                    <a href='app.dosivault://dapp/?uri_dapps=https://mail.google.com'>Dapps uri gmail</a> <br>
                     <a href='app.dosivault://dapp/?uri_dapps=javascript:alert(document.cookie)'>Dapps uri inject js</a>
                 </h3>
                 <button onClick={() => {
